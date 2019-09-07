@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hot Restaurant</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery.js"></script>
+  </head>
+  <body>
+    <!-------------------------jumbotron----------------------------->
+    <div class="jumbotron text-center bg-light">
+      <strong><h1>KILLER SPICY RICEY (RESTAURANT)</h1></strong>
+      <P>...AND YOUR DRINK ICY ICY</P>
+      <hr />
+      <strong
+        ><h3>
+          Current Reservations and Waiting List
+        </h3></strong
+      >
+      <br />
+      <!--------------------------home/reservation buttons---------------------------------->
+      <a href="/make"
+        ><button type="button" class="btn btn-danger btn-lg text-center">
+          Make Reservation
+        </button></a
+      >
+      <a href="/"
+        ><button type="button" class="btn bg-white btn-lg text-center">
+          Home
+        </button>
+      </a>
+    </div>
+    <br />
+    <div class="card" style="width: 100rem;">
+      <div class="card-header">
+        <strong><h3>Current Reservations</h3></strong>
+      </div>
+      <div>
+        <div>
+          <ul class="list-group list-group-flush" id="reserve">
+            <!-- <h5>TABLE # 1</h5>
+            <hr />
+            <li class="list-group-item" id="id">ID:</li>
+            <li class="list-group-item" id="name ">Name:</li>
+            <li class="list-group-item" id="email">Email:</li>
+            <li class="list-group-item" id="phone">Phone:</li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <br />
+    <!-------------Waiting list card--------------->
+    <div class="card" style="width: 100rem;">
+      <div class="card-header">
+        <strong><h3>Waiting List</h3></strong>
+      </div>
+      <div>
+        <div>
+          <ul class="list-group list-group-flush" id="waitlist">
+            <!-- <h5>TABLE # 1</h5>
+                  <hr />
+                  <li class="list-group-item" id="id">ID:</li>
+                  <li class="list-group-item" id="name ">Name:</li>
+                  <li class="list-group-item" id="email">Email:</li>
+                  <li class="list-group-item" id="phone">Phone:</li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <br />
+  </body>
+
+  <script>
+    function reservationList() {
+      $.ajax({ url: "/api/reservations", method: "GET" }).then(function(
+        reservations
+      ) {
+        for (var i = 0; i < reservations.length; i++) {
+          // Get a reference to the tableList element and populate it with tables
+          var tableList = $("#reserve");
+
+          // Then display the fields in the HTML (Section Name, Date, URL)
+          var listItem = $("<li class='list-group-item mt-4'>");
+
+          listItem.append(
+            $("<h2>").text("Table #" + (i + 1)),
+            $("<hr>"),
+            $("<h2>").text("Name: " + reservations[i].name),
+            $("<h2>").text("Phone: " + reservations[i].phone),
+            $("<h2>").text("Email: " + reservations[i].email),
+            $("<h2>").text("ID: " + reservations[i].uniqueID)
+          );
+
+          tableList.append(listItem);
+        }
+      });
+    }
+
+    //wait list
+    function waitListQuery() {
+      // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
+      $.ajax({ url: "/api/waitList", method: "GET" }).then(function(waitlist) {
+        // Here we then log the waitlistData to console, where it will show up as an object.
+        console.log("waitlist info" + waitlist);
+        console.log("------------------------------------");
+
+        // Loop through and display each of the customers
+        for (var i = 0; i < waitlist.length; i++) {
+          // Get a reference to the waitList element and populate it with tables
+          var waitListElement = $("#waitlist");
+
+          // Then display the fields in the HTML (Section Name, Date, URL)
+          var listItem = $("<li class='list-group-item mt-4'>");
+
+          listItem.append(
+            $("<h2>").text("Table #" + (i + 1)),
+            $("<hr>"),
+            $("<h2>").text("Name: " + waitlist[i].name),
+            $("<h2>").text("Phone: " + waitlist[i].phone),
+            $("<h2>").text("Email: " + waitlist[i].email),
+            $("<h2>").text("ID: " + waitlist[i].uniqueID)
+          );
+
+          waitListElement.append(listItem);
+        }
+      });
+    }
+    // This function resets all of the data in our tables. This is intended to let you restart a demo.
+    // function clearTable() {
+    //   alert("Clearing...");
+
+    //   // Clear the tables on the server and then empty the elements on the client
+    //   $.ajax({ url: "/api/clear", method: "POST" }).then(function() {
+    //     $("#waitList").empty();
+    //     $("#tableList").empty();
+    //   });
+    // }
+
+    // $("#clear").on("click", clearTable);
+
+    reservationList();
+    waitListQuery();
+  </script>
+</html>

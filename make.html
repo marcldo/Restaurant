@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hot Restaurant</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery.js"></script>
+  </head>
+  <body>
+    <!-------------------------jumbotron----------------------------->
+    <div class="jumbotron text-center bg-light">
+      <strong><h1>KILLER SPICY RICEY (RESTAURANT)</h1></strong>
+      <P>...AND YOUR DRINK ICY ICY</P>
+      <hr />
+      <strong><h3>Make your Reservation</h3></strong>
+      <br />
+      <!--------------------------home/reservation buttons---------------------------------->
+      <a href="/view"
+        ><button type="button" class="btn btn-primary btn-lg text-center">
+          View Tables
+        </button>
+      </a>
+      <a href="/"
+        ><button type="button" class="btn bg-white btn-lg text-center">
+          Home
+        </button>
+      </a>
+    </div>
+    <br />
+    <div class="card">
+      <div class="card-header">
+        Table Reservation
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"></h5>
+        <div class="card">
+          <h7>Name</h7>
+          <input type="text" id="fullname" placeholder="Your full name.." />
+        </div>
+        <br />
+
+        <div class="card">
+          <h7>Phone Number</h7>
+          <input type="text" id="phone" placeholder="Your phone" />
+        </div>
+        <br />
+
+        <div class="card">
+          <h7>Email</h7>
+          <input type="text" id="email" placeholder="Your email address" />
+        </div>
+        <br />
+
+        <div class="card">
+          <h7>Unique ID</h7>
+          <input type="text" id="uniqueid" placeholder="Your unique ID" />
+        </div>
+        <br />
+
+        <a href="#" class="btn btn-primary" id="submit">Submit</a>
+      </div>
+    </div>
+  </body>
+  <!-------------------------------submit info to the server.js----------------------------------------->
+  <script type="text/javascript">
+    $("#submit").on("click", function() {
+      event.preventDefault();
+      var newReservation = {
+        name: $("#fullname")
+          .val()
+          .trim(),
+        phone: $("#phone")
+          .val()
+          .trim(),
+        email: $("#email")
+          .val()
+          .trim(),
+        uniqueID: $("#uniqueid")
+          .val()
+          .trim()
+      };
+      $.post("/api/reservations", newReservation).then(function(data) {
+        console.log("add.html", data);
+        alert("Adding reservation.......");
+      });
+    });
+  </script>
+</html>
